@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+//TODO: Dodać pobieranie kodu QR do pliku
 public class MainActivity extends AppCompatActivity {
     private Button buyer_btn,seller_btn,courier_btn;
 
