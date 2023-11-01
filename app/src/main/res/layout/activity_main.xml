@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Dla kupującego" />
+            android:text="Dla sprzedającego" />
 
         <Button
             android:id="@+id/receiver_button"
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:text="Dla sprzedającego" />
+            android:text="Dla kupującego" />
 
         <Button
             android:id="@+id/courier_button"
