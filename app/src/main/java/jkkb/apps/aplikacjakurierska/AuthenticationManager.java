@@ -21,12 +21,27 @@ public class AuthenticationManager {
                 build();
         BiometricManager manager = BiometricManager.from(context);
 
-        switch (manager.canAuthenticate(auth_options)){
+        switch (manager.canAuthenticate(auth_options)) {
             case BiometricManager.BIOMETRIC_SUCCESS:
-                Log.println(Log.INFO,"","Autoryzacja jest wspierana");
+                Log.println(Log.INFO, "", "Autoryzacja jest wspierana");
                 break;
             case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
-                Log.println(Log.INFO,"","Brak odpowiedniego czujnika");
+                Log.println(Log.INFO, "", "Brak odpowiedniego czujnika");
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                Log.println(Log.INFO, "", "Czujnik niedostępny");
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                Log.println(Log.INFO, "", "Brak istniejącego poświadczenia");
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED:
+                Log.println(Log.INFO, "", "Wymagana aktualizacja oprogramowania");
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED:
+                Log.println(Log.INFO, "", "Biometria nie wspierana");
+                break;
+            case BiometricManager.BIOMETRIC_STATUS_UNKNOWN:
+                Log.println(Log.INFO, "", "Nieznany stan czujnika");
                 break;
         }
     }
