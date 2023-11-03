@@ -11,6 +11,8 @@ public class Order{
     private Receiver receiver;
     private String id = UUID.randomUUID().toString();
 
+    OrdersState state = OrdersState.NONE;
+
     public Order(Sender sender, Receiver receiver) {
         this.sender = sender;
         this.receiver = receiver;
@@ -34,4 +36,5 @@ public class Order{
         this.receiver = receiver;
     }
     public String getId(){return id;}
+    public OrdersState getState() {return state;}
 }
