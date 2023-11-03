@@ -10,7 +10,6 @@ import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 public class QRGenerator {
-
     public Bitmap generate(String data, ImageView bitmap) throws WriterException {
         MultiFormatWriter writer = new MultiFormatWriter();
         //Zapisz podane dane, np. identyfikator przesyłki do kodu QR
