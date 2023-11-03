@@ -22,7 +22,7 @@
             android:name=".CourierActivity"
             android:exported="false" />
         <activity
-            android:name=".QRActivity"
+            android:name=".QR.QRActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

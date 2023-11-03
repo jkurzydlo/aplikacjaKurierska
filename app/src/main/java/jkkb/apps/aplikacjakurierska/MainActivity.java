@@ -6,14 +6,14 @@ import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.concurrent.Executor;
+
+import jkkb.apps.aplikacjakurierska.Authentication.AuthenticationManager;
 
 //TODO: Dodać pobieranie kodu QR do pliku
 public class MainActivity extends AppCompatActivity {

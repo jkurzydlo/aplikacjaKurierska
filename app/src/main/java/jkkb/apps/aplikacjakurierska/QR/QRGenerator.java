@@ -1,4 +1,4 @@
-package jkkb.apps.aplikacjakurierska;
+package jkkb.apps.aplikacjakurierska.QR;
 
 import android.graphics.Bitmap;
 import android.widget.ImageView;

@@ -1,4 +1,4 @@
-package jkkb.apps.aplikacjakurierska;
+package jkkb.apps.aplikacjakurierska.Authentication;
 
 import android.content.Context;
 import android.util.Log;

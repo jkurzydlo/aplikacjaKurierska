@@ -1,5 +1,7 @@
 package jkkb.apps.aplikacjakurierska;
 
+
+//PropertyName
 public enum OrdersState {
     //Wartość domyślna
      NONE,

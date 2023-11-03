@@ -14,6 +14,8 @@ import android.widget.ImageButton;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
+import jkkb.apps.aplikacjakurierska.QR.QRActivity;
+
 public class CourierActivity extends AppCompatActivity {
 
     private Button scan_qr_btn;

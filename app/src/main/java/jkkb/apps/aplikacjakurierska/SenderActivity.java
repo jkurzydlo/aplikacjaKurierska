@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.google.zxing.WriterException;
 
+import jkkb.apps.aplikacjakurierska.QR.QRGenerator;
+
 public class SenderActivity extends AppCompatActivity {
 
     private Order order = new Order(new Sender(),new Receiver());
