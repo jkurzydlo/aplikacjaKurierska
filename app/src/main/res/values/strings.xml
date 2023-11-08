@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Aplikacja Kurierska v1</string>
+    <string name="scan_qr_label">Skanuj kod QR</string>
+    <string name="label_list_of_orders">Lista przesyłek</string>
+    <string name="buyer_button_label">Dla sprzedającego</string>
+    <string name="seller_button_label">Dla kupującego</string>
+    <string name="courier_button_label">Dla kuriera</string>
+    <string name="generate_qr_label">Generuj kod QR</string>
+    <string name="sender_data_label">Dane nadawcy</string>
+    <string name="buyer_data_label">Dane odbiorcy</string>
+    <string name="next_label">dalej</string>
+    <string name="address_label">Adres</string>
+    <string name="surname_label">Nazwisko</string>
+    <string name="name_label">Imię</string>
+    <string name="generated_qr_code_label">Kod QR</string>
+    <string name="list_receiver_info">Receiver info</string>
+    <string name="list_sender_info">Sender info</string>
+</resources>
