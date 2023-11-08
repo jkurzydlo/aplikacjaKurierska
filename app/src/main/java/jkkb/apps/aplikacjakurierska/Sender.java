@@ -9,19 +9,23 @@ import java.util.Locale;
 //klasa nie może z niczego dziedziczyć bo Firebase nie obsłuży jej mapowania, w innym przypadku powinna dziedziczyć z ogólnej klasy abstrakcyjnej/ interfejsu Customer
 
 public class Sender {
-    private String name,surname;
+    private String name;
+    private String surname;
+    private String phone_nr;
     private Address address;
 
-    public Sender(String name, String surname,Address address){
+    public Sender(String name, String surname,String phone_nr,Address address){
         this.name = name;
         this.surname = surname;
         this.address = address;
+        this.phone_nr = phone_nr;
     }
 
     public Sender(){
         this.name="";
         this.surname="";
         this.address = new Address("","","");
+        this.phone_nr = "";
     }
 
     @NonNull
@@ -52,6 +56,14 @@ public class Sender {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public String getPhoneNr() {
+        return phone_nr;
+    }
+
+    public void setPhoneNr(String phone_nr) {
+        this.phone_nr = phone_nr;
     }
 
 }

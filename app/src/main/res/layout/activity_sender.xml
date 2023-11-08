@@ -135,6 +135,20 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@android:drawable/ic_menu_revert" />
 
+        <EditText
+            android:id="@+id/editTextPhone"
+            android:layout_width="170dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="25dp"
+            android:ems="10"
+            android:hint="Telefon"
+            android:inputType="phone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/editTextCity"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPostalAddress" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
