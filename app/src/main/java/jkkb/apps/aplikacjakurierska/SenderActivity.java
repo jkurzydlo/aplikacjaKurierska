@@ -40,6 +40,7 @@ public class SenderActivity extends AppCompatActivity {
         sender.getAddress().setCity(city_box.getText().toString());
         sender.getAddress().setStreet(street_box.getText().toString());
         sender.getAddress().setPostal_code(postal_box.getText().toString());
+        sender.setPhoneNr(phone_box.getText().toString());
         order.setSender(sender);
     }
 
@@ -49,6 +50,7 @@ public class SenderActivity extends AppCompatActivity {
         receiver.getAddress().setCity(city_box.getText().toString());
         receiver.getAddress().setStreet(street_box.getText().toString());
         receiver.getAddress().setPostal_code(postal_box.getText().toString());
+        receiver.setPhoneNr(phone_box.getText().toString());
         order.setReceiver(receiver);
     }
     @Override
@@ -79,16 +81,16 @@ public class SenderActivity extends AppCompatActivity {
             city_box=findViewById(R.id.editTextCity);
             street_box=findViewById(R.id.editTextStreet);
             postal_box=findViewById(R.id.editTextTextPostalAddress);
+            phone_box = findViewById(R.id.editTextPhone);
 
             //Jeśli użytkownik zostawił puste pola pojawi się komunikat
             if(!name_box.getText().toString().isEmpty() && !surname_box.getText().toString().isEmpty() &&
                     !city_box.getText().toString().isEmpty() && !street_box.getText().toString().isEmpty()
-                    && !postal_box.getText().toString().isEmpty()){
+                    && !postal_box.getText().toString().isEmpty() && !phone_box.getText().toString().isEmpty()){
 
                 if(next_btn.getText().toString().equals("dalej")){
 
                     fillOrderWithSenderData(order.getSender());
-
                     header_text.setText(getString(R.string.buyer_data_label));
                     next_btn.setText(R.string.generate_qr_label);
                     name_box.setText("");
@@ -96,6 +98,7 @@ public class SenderActivity extends AppCompatActivity {
                     city_box.setText("");
                     postal_box.setText("");
                     street_box.setText("");
+                    phone_box.setText("");
 
                 }
                 //Jeżeli tekst na przycisku = "Generuj kod qr", tzn. nadawca podał swoje dane, przejdź do formularza odbiorcy
@@ -112,6 +115,7 @@ public class SenderActivity extends AppCompatActivity {
                     city_box.clearFocus();
                     postal_box.clearFocus();
                     street_box.clearFocus();
+                    phone_box.clearFocus();
 
                 }
 
