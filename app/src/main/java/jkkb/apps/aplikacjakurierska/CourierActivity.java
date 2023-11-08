@@ -3,6 +3,8 @@ package jkkb.apps.aplikacjakurierska;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,10 +16,13 @@ import android.widget.ImageButton;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
+import java.util.ArrayList;
+
 public class CourierActivity extends AppCompatActivity {
 
     private Button scan_qr_btn;
     private ImageButton back_btn;
+    private ArrayList<Order> orders;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +36,20 @@ public class CourierActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+
+        //lista
+        RecyclerView list_view = findViewById(R.id.order_list);
+        Log.println(Log.INFO,"",getApplicationInfo().dataDir);
+
+        list_view.setLayoutManager(new LinearLayoutManager(this));
+
+        //test
+        orders = new ArrayList<>();
+        orders.add(new Order(
+                new Sender("Adam","Nowak","123456789", new Address("Warszawa","Polna","33-190")),
+                new Receiver("Anna","Kowalska","987654321",new Address("Krakow","Dluga","22-222"))
+        ));
+        list_view.setAdapter(new OrderListAdapter(getApplicationContext(),orders));
 
     }
 

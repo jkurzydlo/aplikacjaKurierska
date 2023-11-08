@@ -16,6 +16,9 @@
             android:name=".ReceiverActivity"
             android:exported="false" />
         <activity
+            android:name=".QRActivity"
+            android:exported="false" />
+        <activity
             android:name=".SenderActivity"
             android:exported="false" />
         <activity
