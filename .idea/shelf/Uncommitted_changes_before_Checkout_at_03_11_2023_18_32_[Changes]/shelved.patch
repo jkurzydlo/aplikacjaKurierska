@@ -1,0 +1,40 @@
+Index: app/src/main/java/jkkb/apps/aplikacjakurierska/Authentication/AuthenticationManager.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package jkkb.apps.aplikacjakurierska.Authentication;\r\n\r\nimport android.content.Context;\r\nimport android.util.Log;\r\n\r\nimport androidx.biometric.BiometricManager;\r\nimport androidx.biometric.BiometricPrompt;\r\n\r\n//Klasa odpowiedzialna za wybór obsługiwanych opcji autoryzacji i jej obsługę\r\npublic class AuthenticationManager {\r\n    private BiometricPrompt.PromptInfo prompt;\r\n    //Możliwe opcje autoryzacji\r\n    private int auth_options =  BiometricManager.Authenticators.BIOMETRIC_STRONG |\r\n            BiometricManager.Authenticators.DEVICE_CREDENTIAL;\r\n\r\n    public AuthenticationManager(Context context){\r\n        prompt = new BiometricPrompt.PromptInfo.Builder().\r\n                setTitle(\"Logowanie biometryczne\").\r\n                setSubtitle(\"Zaloguj się używając odcisku palca\").\r\n                setAllowedAuthenticators(auth_options).\r\n                build();\r\n        BiometricManager manager = BiometricManager.from(context);\r\n\r\n        switch (manager.canAuthenticate(auth_options)){\r\n            case BiometricManager.BIOMETRIC_SUCCESS:\r\n                Log.println(Log.INFO,\"\",\"Autoryzacja jest wspierana\");\r\n                break;\r\n            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:\r\n                Log.println(Log.INFO,\"\",\"Brak odpowiedniego czujnika\");\r\n                break;\r\n        }\r\n    }\r\n\r\n    public BiometricPrompt.PromptInfo getPrompt() {\r\n        return prompt;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/app/src/main/java/jkkb/apps/aplikacjakurierska/Authentication/AuthenticationManager.java b/app/src/main/java/jkkb/apps/aplikacjakurierska/Authentication/AuthenticationManager.java
+--- a/app/src/main/java/jkkb/apps/aplikacjakurierska/Authentication/AuthenticationManager.java	
++++ b/app/src/main/java/jkkb/apps/aplikacjakurierska/Authentication/AuthenticationManager.java	
+@@ -21,13 +21,28 @@
+                 build();
+         BiometricManager manager = BiometricManager.from(context);
+ 
+-        switch (manager.canAuthenticate(auth_options)){
++        switch (manager.canAuthenticate(auth_options)) {
+             case BiometricManager.BIOMETRIC_SUCCESS:
+-                Log.println(Log.INFO,"","Autoryzacja jest wspierana");
++                Log.println(Log.INFO, "", "Autoryzacja jest wspierana");
+                 break;
+             case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+-                Log.println(Log.INFO,"","Brak odpowiedniego czujnika");
++                Log.println(Log.INFO, "", "Brak odpowiedniego czujnika");
+                 break;
++            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
++                Log.println(Log.INFO, "", "Czujnik niedostępny");
++                break;
++            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
++                Log.println(Log.INFO, "", "Brak istniejącego poświadczenia");
++                break;
++            case BiometricManager.BIOMETRIC_ERROR_SECURITY_UPDATE_REQUIRED:
++                Log.println(Log.INFO, "", "Wymagana aktualizacja oprogramowania");
++                break;
++            case BiometricManager.BIOMETRIC_ERROR_UNSUPPORTED:
++                Log.println(Log.INFO, "", "Biometria nie wspierana");
++                break;
++            case BiometricManager.BIOMETRIC_STATUS_UNKNOWN:
++                Log.println(Log.INFO, "", "Nieznany stan czujnika");
++                break;
+         }
+     }
+ 

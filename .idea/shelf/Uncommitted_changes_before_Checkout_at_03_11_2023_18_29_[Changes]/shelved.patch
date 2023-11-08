@@ -1,0 +1,110 @@
+Index: .idea/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/.gitignore b/.idea/.gitignore
+new file mode 100644
+--- /dev/null	(date 1699019153965)
++++ b/.idea/.gitignore	(date 1699019153965)
+@@ -0,0 +1,3 @@
++# Default ignored files
++/shelf/
++/workspace.xml
+Index: .idea/deploymentTargetDropDown.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/deploymentTargetDropDown.xml b/.idea/deploymentTargetDropDown.xml
+new file mode 100644
+--- /dev/null	(date 1699019153965)
++++ b/.idea/deploymentTargetDropDown.xml	(date 1699019153965)
+@@ -0,0 +1,17 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="deploymentTargetDropDown">
++    <targetSelectedWithDropDown>
++      <Target>
++        <type value="QUICK_BOOT_TARGET" />
++        <deviceKey>
++          <Key>
++            <type value="VIRTUAL_DEVICE_PATH" />
++            <value value="C:\Users\Jacek\.android\avd\Pixel_XL_API_34.avd" />
++          </Key>
++        </deviceKey>
++      </Target>
++    </targetSelectedWithDropDown>
++    <timeTargetWasSelectedWithDropDown value="2023-10-19T10:12:08.554613300Z" />
++  </component>
++</project>
+\ No newline at end of file
+Index: app/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/.gitignore b/app/.gitignore
+new file mode 100644
+--- /dev/null	(date 1699019153980)
++++ b/app/.gitignore	(date 1699019153980)
+@@ -0,0 +1,1 @@
++/build
+\ No newline at end of file
+Index: .gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+--- /dev/null	(date 1699031464060)
++++ b/.gitignore	(date 1699031464060)
+@@ -0,0 +1,47 @@
++*.iml
++.gradle
++/local.properties
++/.idea/caches
++/.idea/libraries
++/.idea/modules.xml
++/.idea/workspace.xml
++/.idea/navEditor.xml
++/.idea/assetWizardSettings.xml
++.DS_Store
++/build
++/captures
++.externalNativeBuild
++.cxx
++local.properties
++/.idea/vcs.xml
++/app/src/main/res/values/colors.xml
++/.idea/compiler.xml
++/app/src/main/res/xml/backup_rules.xml
++/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
++/app/src/main/res/mipmap-xhdpi/ic_launcher.webp
++/app/src/androidTest/java/jkkb/apps/aplikacjakurierska/ExampleInstrumentedTest.java
++/.idea/.name
++/gradle.properties
++/app/src/main/res/values-night/themes.xml
++/app/src/test/java/jkkb/apps/aplikacjakurierska/ExampleUnitTest.java
++/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp
++/app/src/main/res/xml/data_extraction_rules.xml
++/gradle/wrapper/gradle-wrapper.properties
++/gradlew.bat
++/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp
++/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp
++/app/src/main/res/mipmap-hdpi/ic_launcher.webp
++/gradle/wrapper/gradle-wrapper.jar
++/gradlew
++/app/src/main/res/mipmap-mdpi/ic_launcher.webp
++/.idea/gradle.xml
++/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp
++/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp
++/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp
++/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp
++/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml
++/.idea/misc.xml
++/app/proguard-rules.pro
++/settings.gradle.kts
++/app/src/main/res/values/strings.xml
++/app/src/main/res/values/themes.xml

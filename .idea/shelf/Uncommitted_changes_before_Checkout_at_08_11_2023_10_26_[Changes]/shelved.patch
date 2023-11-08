@@ -1,0 +1,252 @@
+Index: app/build.gradle.kts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\r\n    id(\"com.android.application\")\r\n}\r\n\r\nandroid {\r\n    namespace = \"jkkb.apps.aplikacjakurierska\"\r\n    compileSdk = 34\r\n\r\n    defaultConfig {\r\n        applicationId = \"jkkb.apps.aplikacjakurierska\"\r\n        minSdk = 30\r\n        targetSdk = 34\r\n        versionCode = 1\r\n        versionName = \"1.0\"\r\n\r\n        testInstrumentationRunner = \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            isMinifyEnabled = false\r\n            proguardFiles(getDefaultProguardFile(\"proguard-android-optimize.txt\"), \"proguard-rules.pro\")\r\n        }\r\n    }\r\n    compileOptions {\r\n        sourceCompatibility = JavaVersion.VERSION_1_8\r\n        targetCompatibility = JavaVersion.VERSION_1_8\r\n    }\r\n}\r\n\r\ndependencies {\r\n\r\n    implementation(\"androidx.appcompat:appcompat:1.6.1\")\r\n    implementation(\"com.google.android.material:material:1.10.0\")\r\n    implementation(\"androidx.constraintlayout:constraintlayout:2.1.4\")\r\n    implementation(\"com.journeyapps:zxing-android-embedded:4.3.0\")\r\n    implementation(\"androidx.biometric:biometric:1.2.0-alpha05\")\r\n    testImplementation(\"junit:junit:4.13.2\")\r\n    androidTestImplementation(\"androidx.test.ext:junit:1.1.5\")\r\n    androidTestImplementation(\"androidx.test.espresso:espresso-core:3.5.1\")\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle.kts b/app/build.gradle.kts
+--- a/app/build.gradle.kts	(revision 4d6bf85c2524feb4fb8f712d5c979697e78bb322)
++++ b/app/build.gradle.kts	(date 1699435495967)
+@@ -4,12 +4,12 @@
+ 
+ android {
+     namespace = "jkkb.apps.aplikacjakurierska"
+-    compileSdk = 34
++    compileSdk = 31
+ 
+     defaultConfig {
+         applicationId = "jkkb.apps.aplikacjakurierska"
+-        minSdk = 30
+-        targetSdk = 34
++        minSdk = 23
++        targetSdk = 31
+         versionCode = 1
+         versionName = "1.0"
+ 
+@@ -30,11 +30,11 @@
+ 
+ dependencies {
+ 
+-    implementation("androidx.appcompat:appcompat:1.6.1")
+-    implementation("com.google.android.material:material:1.10.0")
+-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
++    implementation("androidx.appcompat:appcompat:1.3.0")
++    implementation("com.google.android.material:material:1.5.0-alpha03")
++    implementation("androidx.constraintlayout:constraintlayout:1.1.3")
+     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+-    implementation("androidx.biometric:biometric:1.2.0-alpha05")
++    implementation("androidx.biometric:biometric:1.1.0-alpha02")
+     testImplementation("junit:junit:4.13.2")
+     androidTestImplementation("androidx.test.ext:junit:1.1.5")
+     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+Index: app/src/main/java/jkkb/apps/aplikacjakurierska/Receiver.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package jkkb.apps.aplikacjakurierska;\r\n\r\nimport androidx.annotation.NonNull;\r\n\r\n//klasa nie może z niczego dziedziczyć bo Firebase nie obsłuży jej mapowania, w innym przypadku powinna dziedziczyć z ogólnej klasy abstrakcyjnej/ interfejsu Customer\r\n\r\npublic class Receiver {\r\n    private String name,surname;\r\n    private Address address;\r\n\r\n    public Receiver(String name, String surname,Address address){\r\n        this.name = name;\r\n        this.surname = surname;\r\n        this.address = address;\r\n    }\r\n\r\n    public Receiver(){\r\n        this.name=\"\";\r\n        this.surname=\"\";\r\n        this.address = new Address(\"\",\"\",\"\");\r\n    }\r\n\r\n    @NonNull\r\n    @Override\r\n    public String toString() {\r\n        return name+\" \"+surname+\" \"+address.getStreet()+\" \"+address.getCity()+\" \"+address.getPostal_code();\r\n    }\r\n\r\n    public String getName() {\r\n        return name;\r\n    }\r\n\r\n    public void setName(String name) {\r\n        this.name = name;\r\n    }\r\n\r\n    public String getSurname() {\r\n        return surname;\r\n    }\r\n\r\n    public void setSurname(String surname) {\r\n        this.surname = surname;\r\n    }\r\n\r\n    public Address getAddress() {\r\n        return address;\r\n    }\r\n\r\n    public void setAddress(Address address) {\r\n        this.address = address;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/jkkb/apps/aplikacjakurierska/Receiver.java b/app/src/main/java/jkkb/apps/aplikacjakurierska/Receiver.java
+--- a/app/src/main/java/jkkb/apps/aplikacjakurierska/Receiver.java	(revision 4d6bf85c2524feb4fb8f712d5c979697e78bb322)
++++ b/app/src/main/java/jkkb/apps/aplikacjakurierska/Receiver.java	(date 1699430477469)
+@@ -5,18 +5,23 @@
+ //klasa nie może z niczego dziedziczyć bo Firebase nie obsłuży jej mapowania, w innym przypadku powinna dziedziczyć z ogólnej klasy abstrakcyjnej/ interfejsu Customer
+ 
+ public class Receiver {
+-    private String name,surname;
++    private String name;
++    private String surname;
++
++    private String phone_nr;
+     private Address address;
+ 
+-    public Receiver(String name, String surname,Address address){
++    public Receiver(String name, String surname, String phone_nr,Address address){
+         this.name = name;
+         this.surname = surname;
+         this.address = address;
++        this.phone_nr = phone_nr;
+     }
+ 
+     public Receiver(){
+         this.name="";
+         this.surname="";
++        this.phone_nr = "";
+         this.address = new Address("","","");
+     }
+ 
+@@ -50,4 +55,12 @@
+         this.address = address;
+     }
+ 
++    public String getPhoneNr() {
++        return phone_nr;
++    }
++
++    public void setPhoneNr(String phone_nr) {
++        this.phone_nr = phone_nr;
++    }
++
+ }
+Index: app/src/main/java/jkkb/apps/aplikacjakurierska/Sender.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package jkkb.apps.aplikacjakurierska;\r\n\r\n\r\nimport android.telephony.PhoneNumberUtils;\r\n\r\nimport androidx.annotation.NonNull;\r\n\r\nimport java.util.Locale;\r\n//klasa nie może z niczego dziedziczyć bo Firebase nie obsłuży jej mapowania, w innym przypadku powinna dziedziczyć z ogólnej klasy abstrakcyjnej/ interfejsu Customer\r\n\r\npublic class Sender {\r\n    private String name,surname;\r\n    private Address address;\r\n\r\n    public Sender(String name, String surname,Address address){\r\n        this.name = name;\r\n        this.surname = surname;\r\n        this.address = address;\r\n    }\r\n\r\n    public Sender(){\r\n        this.name=\"\";\r\n        this.surname=\"\";\r\n        this.address = new Address(\"\",\"\",\"\");\r\n    }\r\n\r\n    @NonNull\r\n    @Override\r\n    public String toString() {\r\n        return name+\" \"+surname+\" \"+address.getStreet()+\" \"+address.getCity()+\" \"+address.getPostal_code();\r\n    }\r\n\r\n    public String getName() {\r\n        return name;\r\n    }\r\n\r\n    public void setName(String name) {\r\n        this.name = name;\r\n    }\r\n\r\n    public String getSurname() {\r\n        return surname;\r\n    }\r\n\r\n    public void setSurname(String surname) {\r\n        this.surname = surname;\r\n    }\r\n\r\n    public Address getAddress() {\r\n        return address;\r\n    }\r\n\r\n    public void setAddress(Address address) {\r\n        this.address = address;\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/jkkb/apps/aplikacjakurierska/Sender.java b/app/src/main/java/jkkb/apps/aplikacjakurierska/Sender.java
+--- a/app/src/main/java/jkkb/apps/aplikacjakurierska/Sender.java	(revision 4d6bf85c2524feb4fb8f712d5c979697e78bb322)
++++ b/app/src/main/java/jkkb/apps/aplikacjakurierska/Sender.java	(date 1699429992634)
+@@ -9,19 +9,23 @@
+ //klasa nie może z niczego dziedziczyć bo Firebase nie obsłuży jej mapowania, w innym przypadku powinna dziedziczyć z ogólnej klasy abstrakcyjnej/ interfejsu Customer
+ 
+ public class Sender {
+-    private String name,surname;
++    private String name;
++    private String surname;
++    private String phone_nr;
+     private Address address;
+ 
+-    public Sender(String name, String surname,Address address){
++    public Sender(String name, String surname,String phone_nr,Address address){
+         this.name = name;
+         this.surname = surname;
+         this.address = address;
++        this.phone_nr = phone_nr;
+     }
+ 
+     public Sender(){
+         this.name="";
+         this.surname="";
+         this.address = new Address("","","");
++        this.phone_nr = "";
+     }
+ 
+     @NonNull
+@@ -54,4 +58,12 @@
+         this.address = address;
+     }
+ 
++    public String getPhoneNr() {
++        return phone_nr;
++    }
++
++    public void setPhoneNr(String phone_nr) {
++        this.phone_nr = phone_nr;
++    }
++
+ }
+Index: app/src/main/java/jkkb/apps/aplikacjakurierska/SenderActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package jkkb.apps.aplikacjakurierska;\r\n\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\n\r\nimport android.content.Intent;\r\nimport android.graphics.Bitmap;\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\n\r\nimport android.view.View;\r\nimport android.widget.Button;\r\nimport android.widget.EditText;\r\nimport android.widget.ImageButton;\r\nimport android.widget.ImageView;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\n\r\nimport com.google.zxing.WriterException;\r\n\r\nimport jkkb.apps.aplikacjakurierska.QR.QRGenerator;\r\n\r\npublic class SenderActivity extends AppCompatActivity {\r\n\r\n    private Order order = new Order(new Sender(),new Receiver());\r\n    private Button qr_generate_btn;\r\n    private ImageButton back_btn;\r\n    private Button next_btn;\r\n    private TextView header_text;\r\n    private EditText name_box,surname_box,city_box,street_box,postal_box,phone_box; //Dodać pole z telefonem/mailem\r\n    private boolean qr_generated = false;\r\n    private ImageView qr_code;\r\n    private QRGenerator generator = new QRGenerator();\r\n    private Bitmap qr_bitmap = Bitmap.createBitmap(1,1, Bitmap.Config.ALPHA_8);\r\n\r\n    // final int permission_status=0;\r\n\r\n\r\n    private void fillOrderWithSenderData(Sender sender){\r\n        sender.setName(name_box.getText().toString());\r\n        sender.setSurname(surname_box.getText().toString());\r\n        sender.getAddress().setCity(city_box.getText().toString());\r\n        sender.getAddress().setStreet(street_box.getText().toString());\r\n        sender.getAddress().setPostal_code(postal_box.getText().toString());\r\n        order.setSender(sender);\r\n    }\r\n\r\n    private void fillOrderWithReceiverData(Receiver receiver){\r\n        receiver.setName(name_box.getText().toString());\r\n        receiver.setSurname(surname_box.getText().toString());\r\n        receiver.getAddress().setCity(city_box.getText().toString());\r\n        receiver.getAddress().setStreet(street_box.getText().toString());\r\n        receiver.getAddress().setPostal_code(postal_box.getText().toString());\r\n        order.setReceiver(receiver);\r\n    }\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_sender);\r\n\r\n        next_btn = findViewById(R.id.sender_next_button);\r\n        qr_code = findViewById(R.id.generated_qr);\r\n        back_btn = findViewById(R.id.sender_back_button);\r\n\r\n        //Przycisk wróć\r\n        back_btn.setOnClickListener((View view) ->{\r\n            Log.println(Log.INFO,\"\",order.getSender().getName());\r\n            qr_generated = false;\r\n            Intent intent = new Intent(this,MainActivity.class);\r\n            startActivity(intent);\r\n            finish();\r\n        });\r\n\r\n        next_btn.setOnClickListener((View view)-> {\r\n\r\n            header_text = findViewById(R.id.sender_data);\r\n            next_btn = findViewById(R.id.sender_next_button);\r\n            name_box=findViewById(R.id.editTextName);\r\n            surname_box=findViewById(R.id.editTextSurname);\r\n            city_box=findViewById(R.id.editTextCity);\r\n            street_box=findViewById(R.id.editTextStreet);\r\n            postal_box=findViewById(R.id.editTextTextPostalAddress);\r\n\r\n            //Jeśli użytkownik zostawił puste pola pojawi się komunikat\r\n            if(!name_box.getText().toString().isEmpty() && !surname_box.getText().toString().isEmpty() &&\r\n                    !city_box.getText().toString().isEmpty() && !street_box.getText().toString().isEmpty()\r\n                    && !postal_box.getText().toString().isEmpty()){\r\n\r\n                if(next_btn.getText().toString().equals(\"dalej\")){\r\n\r\n                    fillOrderWithSenderData(order.getSender());\r\n\r\n                    header_text.setText(getString(R.string.buyer_data_label));\r\n                    next_btn.setText(R.string.generate_qr_label);\r\n                    name_box.setText(\"\");\r\n                    surname_box.setText(\"\");\r\n                    city_box.setText(\"\");\r\n                    postal_box.setText(\"\");\r\n                    street_box.setText(\"\");\r\n\r\n                }\r\n                //Jeżeli tekst na przycisku = \"Generuj kod qr\", tzn. nadawca podał swoje dane, przejdź do formularza odbiorcy\r\n                else if(next_btn.getText().equals(getString(R.string.generate_qr_label))){\r\n                    //Generuj kod QR\r\n                    try {\r\n                        qr_bitmap = generator.generate(order.getId(),qr_code);\r\n                    } catch (WriterException e) {}\r\n\r\n                    qr_generated = true;\r\n                    fillOrderWithReceiverData(order.getReceiver());\r\n                    name_box.clearFocus();\r\n                    surname_box.clearFocus();\r\n                    city_box.clearFocus();\r\n                    postal_box.clearFocus();\r\n                    street_box.clearFocus();\r\n\r\n                }\r\n\r\n\r\n            }else{\r\n                Toast.makeText(this,\"Uzupełnij dane\",Toast.LENGTH_SHORT).show();\r\n                return;\r\n            }\r\n\r\n\r\n\r\n        });\r\n\r\n    }\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/jkkb/apps/aplikacjakurierska/SenderActivity.java b/app/src/main/java/jkkb/apps/aplikacjakurierska/SenderActivity.java
+--- a/app/src/main/java/jkkb/apps/aplikacjakurierska/SenderActivity.java	(revision 4d6bf85c2524feb4fb8f712d5c979697e78bb322)
++++ b/app/src/main/java/jkkb/apps/aplikacjakurierska/SenderActivity.java	(date 1699430547966)
+@@ -42,6 +42,7 @@
+         sender.getAddress().setCity(city_box.getText().toString());
+         sender.getAddress().setStreet(street_box.getText().toString());
+         sender.getAddress().setPostal_code(postal_box.getText().toString());
++        sender.setPhoneNr(phone_box.getText().toString());
+         order.setSender(sender);
+     }
+ 
+@@ -51,6 +52,7 @@
+         receiver.getAddress().setCity(city_box.getText().toString());
+         receiver.getAddress().setStreet(street_box.getText().toString());
+         receiver.getAddress().setPostal_code(postal_box.getText().toString());
++        receiver.setPhoneNr(phone_box.getText().toString());
+         order.setReceiver(receiver);
+     }
+     @Override
+@@ -81,16 +83,16 @@
+             city_box=findViewById(R.id.editTextCity);
+             street_box=findViewById(R.id.editTextStreet);
+             postal_box=findViewById(R.id.editTextTextPostalAddress);
++            phone_box = findViewById(R.id.editTextPhone);
+ 
+             //Jeśli użytkownik zostawił puste pola pojawi się komunikat
+             if(!name_box.getText().toString().isEmpty() && !surname_box.getText().toString().isEmpty() &&
+                     !city_box.getText().toString().isEmpty() && !street_box.getText().toString().isEmpty()
+-                    && !postal_box.getText().toString().isEmpty()){
++                    && !postal_box.getText().toString().isEmpty() && !phone_box.getText().toString().isEmpty()){
+ 
+                 if(next_btn.getText().toString().equals("dalej")){
+ 
+                     fillOrderWithSenderData(order.getSender());
+-
+                     header_text.setText(getString(R.string.buyer_data_label));
+                     next_btn.setText(R.string.generate_qr_label);
+                     name_box.setText("");
+@@ -98,6 +100,7 @@
+                     city_box.setText("");
+                     postal_box.setText("");
+                     street_box.setText("");
++                    phone_box.setText("");
+ 
+                 }
+                 //Jeżeli tekst na przycisku = "Generuj kod qr", tzn. nadawca podał swoje dane, przejdź do formularza odbiorcy
+@@ -114,6 +117,7 @@
+                     city_box.clearFocus();
+                     postal_box.clearFocus();
+                     street_box.clearFocus();
++                    phone_box.clearFocus();
+ 
+                 }
+ 
+Index: app/src/main/res/layout/activity_main.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    android:background=\"@color/material_dynamic_primary99\"\r\n    tools:context=\".MainActivity\">\r\n\r\n    <LinearLayout\r\n        android:id=\"@+id/linearLayout\"\r\n        android:layout_width=\"181dp\"\r\n        android:layout_height=\"226dp\"\r\n        android:orientation=\"vertical\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.5\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.5\">\r\n\r\n\r\n        <Button\r\n            android:id=\"@+id/sender_button\"\r\n            style=\"@style/Widget.MaterialComponents.Button\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_weight=\"1\"\r\n            android:text=\"Dla sprzedającego\" />\r\n\r\n        <Button\r\n            android:id=\"@+id/receiver_button\"\r\n            style=\"@style/Widget.MaterialComponents.Button\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"48dp\"\r\n            android:layout_weight=\"1\"\r\n            android:text=\"Dla kupującego\" />\r\n\r\n        <Button\r\n            android:id=\"@+id/courier_button\"\r\n            style=\"@style/Widget.MaterialComponents.Button\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_weight=\"1\"\r\n            android:text=\"Dla kuriera\" />\r\n\r\n\r\n\r\n    </LinearLayout>\r\n\r\n\r\n    <View\r\n        android:id=\"@+id/logo_line_up\"\r\n        android:layout_height=\"5dp\"\r\n        android:layout_width=\"match_parent\"\r\n        android:background=\"@android:color/holo_purple\"\r\n        android:layout_marginBottom=\"15dp\"\r\n        app:layout_constraintBottom_toTopOf=\"@+id/logo\"\r\n        />\r\n\r\n    <View\r\n        android:id=\"@+id/logo_line_down\"\r\n        android:layout_height=\"5dp\"\r\n        android:layout_width=\"match_parent\"\r\n        android:background=\"@android:color/holo_purple\"\r\n        android:layout_marginTop=\"15dp\"\r\n        app:layout_constraintTop_toBottomOf=\"@+id/logo\"\r\n        />\r\n\r\n    <ImageView\r\n        android:id=\"@+id/logo\"\r\n        android:layout_width=\"410dp\"\r\n        android:layout_height=\"137dp\"\r\n        android:layout_marginBottom=\"48dp\"\r\n        app:layout_constraintBottom_toTopOf=\"@+id/linearLayout\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        android:src=\"@drawable/logo\"\r\n        />\r\n\r\n\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_main.xml b/app/src/main/res/layout/activity_main.xml
+--- a/app/src/main/res/layout/activity_main.xml	(revision 4d6bf85c2524feb4fb8f712d5c979697e78bb322)
++++ b/app/src/main/res/layout/activity_main.xml	(date 1699434974300)
+@@ -4,7 +4,7 @@
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+-    android:background="@color/material_dynamic_primary99"
++    android:background="@color/cardview_light_background"
+     tools:context=".MainActivity">
+ 
+     <LinearLayout
+Index: app/src/main/res/layout/activity_sender.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".SenderActivity\">\r\n\r\n    <androidx.constraintlayout.widget.ConstraintLayout\r\n        android:layout_width=\"407dp\"\r\n        android:layout_height=\"847dp\"\r\n        android:layout_marginStart=\"1dp\"\r\n        android:layout_marginTop=\"1dp\"\r\n        app:layout_constraintBottom_toBottomOf=\"parent\"\r\n        app:layout_constraintEnd_toEndOf=\"parent\"\r\n        app:layout_constraintHorizontal_bias=\"0.5\"\r\n        app:layout_constraintStart_toStartOf=\"parent\"\r\n        app:layout_constraintTop_toTopOf=\"parent\"\r\n        app:layout_constraintVertical_bias=\"0.5\">\r\n\r\n        <ImageView\r\n            android:id=\"@+id/generated_qr\"\r\n            android:layout_width=\"184dp\"\r\n            android:layout_height=\"179dp\"\r\n            android:layout_marginTop=\"25dp\"\r\n            android:layout_marginBottom=\"228dp\"\r\n            android:contentDescription=\"@string/generated_qr_code_label\"\r\n            app:layout_constraintBottom_toBottomOf=\"parent\"\r\n            app:layout_constraintEnd_toEndOf=\"parent\"\r\n            app:layout_constraintHorizontal_bias=\"0.497\"\r\n            app:layout_constraintStart_toStartOf=\"parent\"\r\n            app:layout_constraintTop_toBottomOf=\"@+id/sender_next_button\"\r\n            app:layout_constraintVertical_bias=\"0.0\"\r\n            app:srcCompat=\"@android:drawable/list_selector_background\" />\r\n\r\n        <EditText\r\n            android:id=\"@+id/editTextName\"\r\n            style=\"@android:style/Widget.Material.EditText\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_marginTop=\"25dp\"\r\n            android:ems=\"10\"\r\n            android:hint=\"@string/name_label\"\r\n            android:inputType=\"text\"\r\n            app:layout_constraintEnd_toEndOf=\"parent\"\r\n            app:layout_constraintHorizontal_bias=\"0.5\"\r\n            app:layout_constraintStart_toStartOf=\"parent\"\r\n            app:layout_constraintTop_toBottomOf=\"@+id/sender_data\" />\r\n\r\n        <EditText\r\n            android:id=\"@+id/editTextSurname\"\r\n            style=\"@android:style/Widget.Material.EditText\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_marginTop=\"25dp\"\r\n            android:ems=\"10\"\r\n            android:hint=\"@string/surname_label\"\r\n            android:inputType=\"text\"\r\n            app:layout_constraintEnd_toEndOf=\"parent\"\r\n            app:layout_constraintHorizontal_bias=\"0.5\"\r\n            app:layout_constraintStart_toStartOf=\"parent\"\r\n            app:layout_constraintTop_toBottomOf=\"@+id/editTextName\" />\r\n\r\n        <EditText\r\n            android:id=\"@+id/editTextStreet\"\r\n            style=\"@android:style/Widget.Material.EditText\"\r\n            android:layout_width=\"170dp\"\r\n            android:layout_height=\"0dp\"\r\n            android:layout_marginStart=\"25dp\"\r\n            android:layout_marginTop=\"24dp\"\r\n            android:ems=\"10\"\r\n            android:hint=\"Ulica\"\r\n            android:inputType=\"textPostalAddress\"\r\n            app:layout_constraintEnd_toEndOf=\"parent\"\r\n            app:layout_constraintHorizontal_bias=\"0.0\"\r\n            app:layout_constraintStart_toStartOf=\"parent\"\r\n            app:layout_constraintTop_toBottomOf=\"@+id/editTextSurname\" />\r\n\r\n        <TextView\r\n            android:id=\"@+id/sender_data\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_marginTop=\"104dp\"\r\n            android:text=\"@string/sender_data_label\"\r\n            android:textAppearance=\"@style/TextAppearance.AppCompat.Large\"\r\n            app:layout_constraintEnd_toEndOf=\"parent\"\r\n            app:layout_constraintStart_toStartOf=\"parent\"\r\n            app:layout_constraintTop_toTopOf=\"parent\" />\r\n\r\n        <Button\r\n            android:id=\"@+id/sender_next_button\"\r\n            style=\"@android:style/Widget.Material.Button\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_marginTop=\"132dp\"\r\n            android:text=\"@string/next_label\"\r\n            app:layout_constraintEnd_toEndOf=\"parent\"\r\n            app:layout_constraintHorizontal_bias=\"0.498\"\r\n            app:layout_constraintStart_toStartOf=\"parent\"\r\n            app:layout_constraintTop_toBottomOf=\"@+id/editTextStreet\" />\r\n\r\n        <EditText\r\n            android:id=\"@+id/editTextCity\"\r\n            android:layout_width=\"170dp\"\r\n            android:layout_height=\"45dp\"\r\n            android:layout_marginStart=\"25dp\"\r\n            android:layout_marginTop=\"25dp\"\r\n            android:ems=\"10\"\r\n            android:hint=\"Miejscowość\"\r\n            android:inputType=\"text\"\r\n            app:layout_constraintStart_toStartOf=\"parent\"\r\n            app:layout_constraintTop_toBottomOf=\"@+id/editTextStreet\" />\r\n\r\n        <EditText\r\n            android:id=\"@+id/editTextTextPostalAddress\"\r\n            android:layout_width=\"170dp\"\r\n            android:layout_height=\"45dp\"\r\n            android:layout_marginStart=\"17dp\"\r\n            android:layout_marginTop=\"25dp\"\r\n            android:layout_marginEnd=\"25dp\"\r\n            android:ems=\"10\"\r\n            android:hint=\"Kod pocztowy\"\r\n            android:inputType=\"textPostalAddress\"\r\n            app:layout_constraintEnd_toEndOf=\"parent\"\r\n            app:layout_constraintStart_toEndOf=\"@+id/editTextStreet\"\r\n            app:layout_constraintTop_toBottomOf=\"@+id/editTextSurname\" />\r\n\r\n        <ImageButton\r\n            android:id=\"@+id/sender_back_button\"\r\n            android:layout_width=\"wrap_content\"\r\n            android:layout_height=\"wrap_content\"\r\n            android:layout_marginStart=\"25dp\"\r\n            android:layout_marginTop=\"75dp\"\r\n            app:layout_constraintStart_toStartOf=\"parent\"\r\n            app:layout_constraintTop_toTopOf=\"parent\"\r\n            app:srcCompat=\"@android:drawable/ic_menu_revert\" />\r\n\r\n    </androidx.constraintlayout.widget.ConstraintLayout>\r\n\r\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_sender.xml b/app/src/main/res/layout/activity_sender.xml
+--- a/app/src/main/res/layout/activity_sender.xml	(revision 4d6bf85c2524feb4fb8f712d5c979697e78bb322)
++++ b/app/src/main/res/layout/activity_sender.xml	(date 1699430283273)
+@@ -135,6 +135,20 @@
+             app:layout_constraintTop_toTopOf="parent"
+             app:srcCompat="@android:drawable/ic_menu_revert" />
+ 
++        <EditText
++            android:id="@+id/editTextPhone"
++            android:layout_width="170dp"
++            android:layout_height="45dp"
++            android:layout_marginStart="17dp"
++            android:layout_marginTop="25dp"
++            android:layout_marginEnd="25dp"
++            android:ems="10"
++            android:hint="Telefon"
++            android:inputType="phone"
++            app:layout_constraintEnd_toEndOf="parent"
++            app:layout_constraintStart_toEndOf="@+id/editTextCity"
++            app:layout_constraintTop_toBottomOf="@+id/editTextTextPostalAddress" />
++
+     </androidx.constraintlayout.widget.ConstraintLayout>
+ 
+ </androidx.constraintlayout.widget.ConstraintLayout>
+\ No newline at end of file
