@@ -1,9 +1,12 @@
 package jkkb.apps.aplikacjakurierska;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,8 +35,16 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderViewHolder> {
     //ustawia pola w widoku na wybrane dane z listy zamówień (orders)
     @Override
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
-        holder.sender_info.setText(orders.get(position).getSender().toString());
-        holder.receiver_info.setText(orders.get(position).getReceiver().toString());
+        holder.sender_info.setText("Od: "+orders.get(position).getSender().toString());
+        holder.receiver_info.setText("Do: "+orders.get(position).getReceiver().toString());
+        holder.itemView.setOnClickListener(view -> {
+            //Intent intent = new Intent(context, FullOrderInfoActivity.class);
+
+            //TODO: Przy bazie danych zmienić na getID()
+            //intent.putExtra("order_id",position);
+            //context.startActivity(intent);
+
+        });
 
         //Dodaje ikony poszczególnych stanów zamówienia
         HashMap<OrdersState,Integer> state_icons = new HashMap<>();

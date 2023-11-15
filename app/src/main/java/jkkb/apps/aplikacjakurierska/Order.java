@@ -37,4 +37,7 @@ public class Order{
     }
     public String getId(){return id;}
     public OrdersState getState() {return state;}
+    public void setState(OrdersState state){
+        this.state = state;
+    }
 }
