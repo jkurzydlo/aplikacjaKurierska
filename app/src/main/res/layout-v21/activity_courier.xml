@@ -35,30 +35,42 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <TextView
             android:id="@+id/order_list_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="104dp"
             android:text="Lista przesyłek"
             android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/courier_scan_qr_button" />
-
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/order_list"
             android:layout_width="279dp"
-            android:layout_height="464dp"
+            android:layout_height="0dp"
             android:layout_marginTop="25dp"
+            android:layout_marginBottom="250dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/order_list_label"
             tools:itemCount="11" />
 
+        <ImageButton
+            android:id="@+id/courier_button_referesh_list"
+            android:layout_width="62dp"
+            android:layout_height="54dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/courier_scan_qr_button"
+            app:srcCompat="@android:drawable/ic_menu_rotate"
+            tools:srcCompat="@android:drawable/ic_menu_rotate" />
+        tools
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

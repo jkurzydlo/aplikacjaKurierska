@@ -3,9 +3,12 @@ package jkkb.apps.aplikacjakurierska;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import android.view.View;
@@ -18,6 +21,8 @@ import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.WriterException;
+
+import java.util.Calendar;
 
 import jkkb.apps.aplikacjakurierska.QR.QRGenerator;
 
@@ -125,6 +130,8 @@ public class SenderActivity extends AppCompatActivity {
                     order.setState(OrdersState.PREPARED_TO_SEND);
                     if(!qr_generated)db.collection("orders").add(order);
                     qr_generated = true;
+                    //Dodaj obraz do galerii
+                    MediaStore.Images.Media.insertImage(getContentResolver(),qr_bitmap,"Order "+ Calendar.getInstance().getTime(),"");
                 }
 
 
