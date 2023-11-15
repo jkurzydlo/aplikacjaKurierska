@@ -2,31 +2,21 @@ package jkkb.apps.aplikacjakurierska;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.IntentSenderRequest;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.IntentSender;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-import com.google.android.gms.auth.api.identity.GetPhoneNumberHintIntentRequest;
-import com.google.android.gms.auth.api.identity.Identity;
-import com.google.android.gms.common.api.ApiException;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
@@ -36,23 +26,35 @@ import jkkb.apps.aplikacjakurierska.QR.QRActivity;
 
 public class CourierActivity extends AppCompatActivity {
 
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Button scan_qr_btn;
-    private ImageButton back_btn;
-    private ArrayList<Order> orders;
-    private String userMob;
+    private ImageButton back_btn,refresh_btn;
+    private ArrayList<Order> orders = new ArrayList<>();
 
     private ActivityResultLauncher<IntentSenderRequest> someActivityResultLauncher;
 
-    private void phoneSelection() {
-
-
+    private void loadOrders(RecyclerView list_view){
+        db.collection("orders").get().addOnCompleteListener(task -> {
+            if(task.isSuccessful())
+                for(QueryDocumentSnapshot doc : task.getResult()){
+                    //Dodaje zlecenia do listy
+                    if(orders.size() < task.getResult().size())orders.add(doc.toObject(Order.class));
+                    list_view.setAdapter(new OrderListAdapter(getApplicationContext(),orders));
+                }
+        });
     }
-
-
         @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courier);
+
+        refresh_btn = findViewById(R.id.courier_button_referesh_list);
+        RecyclerView list_view = findViewById(R.id.order_list);
+        //Zaktualizuj listę po naciśnięciu przycisku
+        refresh_btn.setOnClickListener(view -> {
+                orders.clear();
+                loadOrders(list_view);
+            });
 
         back_btn = findViewById(R.id.courier_button_back);
         scan_qr_btn = findViewById(R.id.courier_scan_qr_button);
@@ -63,36 +65,17 @@ public class CourierActivity extends AppCompatActivity {
             finish();
         });
 
-        String nr;
         //lista
-        RecyclerView list_view = findViewById(R.id.order_list);
+
         Log.println(Log.INFO, "", getApplicationInfo().dataDir);
 
         list_view.setLayoutManager(new LinearLayoutManager(this));
 
 
-        //test
-        orders = new ArrayList<>();
-        orders.add(new Order(
-                new Sender("Adam", "Nowak", "123456789", new Address("Warszawa", "Polna", "33-190")),
-                new Receiver("Anna", "Kowalska", "987654321", new Address("Krakow", "Dluga", "22-222"))
-        ));
-        orders.add(new Order(
-                new Sender("Anna", "Malinowska", "123456789", new Address("Olsztyn", "Ogrodowa", "11-111")),
-                new Receiver("Robert", "Kowalski", "987654321", new Address("Krakow", "Dluga", "22-222"))
-        ));
-
-        orders.add(new Order(
-                new Sender("Urszula", "Nowak", "123456789", new Address("Rzeszow", "Ogrodowa", "11-111")),
-                new Receiver("Robert", "Piechocki", "987654321", new Address("Katowice", "Dluga", "22-222"))
-        ));
-        orders.get(0).setState(OrdersState.TRANSPORTED);
-        orders.get(2).setState(OrdersState.READY_TO_RECEIVE);
-
-        list_view.setAdapter(new OrderListAdapter(CourierActivity.this, orders));
+        loadOrders(list_view);
+        //Dodanie poziomej linii oddzielającej zlecenia
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(list_view.getContext(), DividerItemDecoration.VERTICAL);
         list_view.addItemDecoration(dividerItemDecoration);
-
 
     }
 

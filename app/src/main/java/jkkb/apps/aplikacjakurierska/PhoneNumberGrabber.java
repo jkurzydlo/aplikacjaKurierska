@@ -16,6 +16,16 @@ public class PhoneNumberGrabber {
 
     private GetPhoneNumberHintIntentRequest request = GetPhoneNumberHintIntentRequest.builder().build();
 
+    public static String getPhoneNr() {
+        return phone_nr;
+    }
+
+    public static void setPhoneNr(String phone_nr) {
+        PhoneNumberGrabber.phone_nr = phone_nr;
+    }
+
+    private static String phone_nr;
+
     //metoda pozwalająca na wyświetlenie okna pozwalającego na wybór numeru telefonu
     public void requestPhoneNumber(Context context, ActivityResultLauncher launcher){
         Identity.getSignInClient(context)
