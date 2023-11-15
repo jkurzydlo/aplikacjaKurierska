@@ -16,12 +16,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.WriterException;
 
 import jkkb.apps.aplikacjakurierska.QR.QRGenerator;
 
 public class SenderActivity extends AppCompatActivity {
 
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Order order = new Order(new Sender(),new Receiver());
     private Button qr_generate_btn;
     private ImageButton back_btn;
@@ -110,7 +112,7 @@ public class SenderActivity extends AppCompatActivity {
                         qr_bitmap = generator.generate(order.getId(),qr_code);
                     } catch (WriterException e) {}
 
-                    qr_generated = true;
+
                     fillOrderWithReceiverData(order.getReceiver());
                     name_box.clearFocus();
                     surname_box.clearFocus();
@@ -119,6 +121,10 @@ public class SenderActivity extends AppCompatActivity {
                     street_box.clearFocus();
                     phone_box.clearFocus();
 
+                    //Dodanie zlecenia do bazy danych
+                    order.setState(OrdersState.PREPARED_TO_SEND);
+                    if(!qr_generated)db.collection("orders").add(order);
+                    qr_generated = true;
                 }
 
 

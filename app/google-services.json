@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "894230921820",
+    "project_id": "aplikacjakurierskav1",
+    "storage_bucket": "aplikacjakurierskav1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894230921820:android:dd637d01c6125d2fc89c99",
+        "android_client_info": {
+          "package_name": "jkkb.apps.aplikacjakurierska"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMBbs1HuxhSTxzc9u3n1g1n8P1SOh1gEQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
