@@ -92,6 +92,12 @@ public class CourierActivity extends AppCompatActivity {
     // Po wykryciu przesyłki pokazuje komunikat
     ActivityResultLauncher<ScanOptions> launcher = registerForActivityResult(new ScanContract(), res ->{
         if(res.getContents() != null){
+            //Wybiera z bazy danych tylko przesyłkę z id takim jak na zeskanowanym kodzie
+            db.collection("orders").whereEqualTo("id",res.getContents()).get().addOnCompleteListener(task -> {
+                //Aktualizuje stan przesyłki
+                String firebase_id = task.getResult().getDocuments().get(0).getId();
+                db.collection("orders").document(firebase_id).update("state","TRANSPORTED");
+            });
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Wykryto przesyłkę, nr identyfikacyjny: ");
             builder.setMessage(res.getContents());

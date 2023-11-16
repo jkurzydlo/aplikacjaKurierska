@@ -29,7 +29,7 @@ public class ReceiverActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final PhoneNumberGrabber grabber = new PhoneNumberGrabber();
     private RecyclerView list_view;
-    private ImageButton refresh_btn;
+    private ImageButton refresh_btn,back_btn;
     private TextView empty_label;
     private ArrayList<Order> orders = new ArrayList<>();
 
@@ -42,6 +42,7 @@ public class ReceiverActivity extends AppCompatActivity {
                     //Dodaje zlecenia do listy
                     if(orders.size() < task.getResult().size())orders.add(doc.toObject(Order.class));
                     list_view.setAdapter(new OrderListAdapter(getApplicationContext(),orders));
+                    empty_label.setVisibility(View.INVISIBLE);
                 }
         });
         if(!orders.isEmpty()) empty_label.setVisibility(View.INVISIBLE);
@@ -54,6 +55,12 @@ public class ReceiverActivity extends AppCompatActivity {
         setContentView(R.layout.activity_receiver);
 
         grabber.requestPhoneNumber(this,launcher);
+        back_btn = findViewById(R.id.receiver_button_back);
+        back_btn.setOnClickListener((View view) -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        });
         empty_label = findViewById(R.id.empty_list_label);
         refresh_btn = findViewById(R.id.receiver_button_referesh_list);
         list_view = findViewById(R.id.receiver_order_list);
