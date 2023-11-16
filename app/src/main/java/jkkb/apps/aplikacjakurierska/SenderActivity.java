@@ -62,6 +62,7 @@ public class SenderActivity extends AppCompatActivity {
         receiver.setPhoneNr(phone_box.getText().toString());
         order.setReceiver(receiver);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -128,7 +129,7 @@ public class SenderActivity extends AppCompatActivity {
 
                     //Dodanie zlecenia do bazy danych
                     order.setState(OrdersState.PREPARED_TO_SEND);
-                    if(!qr_generated)db.collection("orders").add(order);
+                    if(!qr_generated)db.collection("orders").document(order.getId()).set(order);
                     qr_generated = true;
                     //Dodaj obraz do galerii
                     MediaStore.Images.Media.insertImage(getContentResolver(),qr_bitmap,"Order "+ Calendar.getInstance().getTime(),"");

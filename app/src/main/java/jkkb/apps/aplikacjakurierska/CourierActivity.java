@@ -39,8 +39,8 @@ public class CourierActivity extends AppCompatActivity {
                 for(QueryDocumentSnapshot doc : task.getResult()){
                     //Dodaje zlecenia do listy
                     if(orders.size() < task.getResult().size())orders.add(doc.toObject(Order.class));
-                    list_view.setAdapter(new OrderListAdapter(getApplicationContext(),orders));
                 }
+            OrderListAdapter adapter = new OrderListAdapter(getApplicationContext(),orders);
         });
     }
         @Override
@@ -73,10 +73,6 @@ public class CourierActivity extends AppCompatActivity {
 
 
         loadOrders(list_view);
-        //Dodanie poziomej linii oddzielającej zlecenia
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(list_view.getContext(), DividerItemDecoration.VERTICAL);
-        list_view.addItemDecoration(dividerItemDecoration);
-
     }
 
     private void readQR(){
@@ -93,11 +89,7 @@ public class CourierActivity extends AppCompatActivity {
     ActivityResultLauncher<ScanOptions> launcher = registerForActivityResult(new ScanContract(), res ->{
         if(res.getContents() != null){
             //Wybiera z bazy danych tylko przesyłkę z id takim jak na zeskanowanym kodzie
-            db.collection("orders").whereEqualTo("id",res.getContents()).get().addOnCompleteListener(task -> {
-                //Aktualizuje stan przesyłki
-                String firebase_id = task.getResult().getDocuments().get(0).getId();
-                db.collection("orders").document(firebase_id).update("state","TRANSPORTED");
-            });
+            db.collection("orders").document(res.getContents()).update("state","TRANSPORTED");
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Wykryto przesyłkę, nr identyfikacyjny: ");
             builder.setMessage(res.getContents());

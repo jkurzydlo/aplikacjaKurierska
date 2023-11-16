@@ -2,6 +2,7 @@ package jkkb.apps.aplikacjakurierska;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,9 +12,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,21 +36,43 @@ public class ReceiverActivity extends AppCompatActivity {
     private ImageButton refresh_btn,back_btn;
     private TextView empty_label;
     private ArrayList<Order> orders = new ArrayList<>();
+    private OrderListAdapter adapter;
 
     private void loadOrders(RecyclerView list_view){
         //Wyświetl tylko te zlecenia przypisane do numeru telefonu na używanym urządzeniu
         db.collection("orders").whereEqualTo("receiver.phoneNr",PhoneNumberGrabber.getPhoneNr()).get().addOnCompleteListener(task -> {
-            if(task.isSuccessful())
-                for(QueryDocumentSnapshot doc : task.getResult()){
-                    Log.println(Log.INFO,"","klik");
+            if(task.isSuccessful()) {
+                for (QueryDocumentSnapshot doc : task.getResult()) {
+                    Log.println(Log.INFO, "", "klik");
                     //Dodaje zlecenia do listy
-                    if(orders.size() < task.getResult().size())orders.add(doc.toObject(Order.class));
-                    list_view.setAdapter(new OrderListAdapter(getApplicationContext(),orders));
+                    if (orders.size() < task.getResult().size())
+                        orders.add(doc.toObject(Order.class));
                     empty_label.setVisibility(View.INVISIBLE);
+
                 }
+                adapter = new OrderListAdapter(this, getApplicationContext(), orders);
+                list_view.setAdapter(adapter);
+            }
+
         });
         if(!orders.isEmpty()) empty_label.setVisibility(View.INVISIBLE);
         else empty_label.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if(orders.get(adapter.getOrderPosition()).getState().equals(OrdersState.READY_TO_RECEIVE)) menu.add("Potwierdź odbiór");
+        menu.add("Pokaż lokalizację");
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        Log.println(Log.INFO,"",orders.get(adapter.getOrderPosition()).getId());
+        if(item.getItemId() == 0)
+            db.document("orders/"+orders.get(adapter.getOrderPosition()).getId()).
+                    update("state","REALISED");
+        return super.onContextItemSelected(item);
     }
 
     @Override
@@ -66,8 +92,6 @@ public class ReceiverActivity extends AppCompatActivity {
         list_view = findViewById(R.id.receiver_order_list);
         list_view.setLayoutManager(new LinearLayoutManager(this));
 
-        //Dodanie poziomej linii oddzielającej zlecenia
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(list_view.getContext(), DividerItemDecoration.VERTICAL);
 
 
         //Zaktualizuj listę po naciśnięciu przycisku
