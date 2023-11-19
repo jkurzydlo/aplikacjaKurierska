@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         // Konfiguracja mapy, np. dodanie markera
-        LatLng location = new LatLng(49.606872, 20.702363); // Poczta 2 NS
+        LatLng location = new LatLng(49.622354, 20.693365); // Poczta 3 NS
         googleMap.addMarker(new MarkerOptions().position(location).title("Marker in Nowy Sącz"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));
     }
