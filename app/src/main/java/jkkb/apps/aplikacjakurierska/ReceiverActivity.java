@@ -62,14 +62,14 @@ public class ReceiverActivity extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if(orders.get(adapter.getOrderPosition()).getState().equals(OrdersState.READY_TO_RECEIVE)) menu.add("Potwierdź odbiór");
+        menu.add("Potwierdź odbiór");
         menu.add("Pokaż lokalizację");
     }
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         Log.println(Log.INFO,"",orders.get(adapter.getOrderPosition()).getId());
-        if(item.getItemId() == 0)
+        if(item.getItemId() == 0 && orders.get(adapter.getOrderPosition()).getState().equals(OrdersState.READY_TO_RECEIVE))
             db.document("orders/"+orders.get(adapter.getOrderPosition()).getId()).
                     update("state","REALISED");
         return super.onContextItemSelected(item);
