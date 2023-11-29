@@ -2,17 +2,21 @@ package jkkb.apps.aplikacjakurierska;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -22,8 +26,12 @@ import android.widget.Toast;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.WriterException;
 
-import java.util.Calendar;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
+import jkkb.apps.aplikacjakurierska.PDF.PDFBitmap;
+import jkkb.apps.aplikacjakurierska.PDF.PDFBuilder;
+import jkkb.apps.aplikacjakurierska.PDF.PDFText;
 import jkkb.apps.aplikacjakurierska.QR.QRGenerator;
 
 public class SenderActivity extends AppCompatActivity {
@@ -34,15 +42,42 @@ public class SenderActivity extends AppCompatActivity {
     private ImageButton back_btn;
     private Button next_btn;
     private TextView header_text;
-    private EditText name_box,surname_box,city_box,street_box,postal_box,phone_box; //Dodać pole z telefonem/mailem
+    private EditText name_box,surname_box,city_box,street_box,postal_box,phone_box;
     private boolean qr_generated = false;
     private ImageView qr_code;
     private QRGenerator generator = new QRGenerator();
     private Bitmap qr_bitmap = Bitmap.createBitmap(1,1, Bitmap.Config.ALPHA_8);
+    private CheckBox send_receipt_checkbox;
 
     // final int permission_status=0;
 
 
+    private void generatePDF(){
+        String qr_filename = "Order "+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+        MediaStore.Images.Media.insertImage(getContentResolver(),qr_bitmap,qr_filename,"");
+
+        Paint title = new Paint();
+        title.setColor(ContextCompat.getColor(this, R.color.black));
+        title.setTextAlign(Paint.Align.CENTER);
+        title.setTextSize(25);
+        title.setTypeface(Typeface.create(Typeface.DEFAULT,Typeface.BOLD));
+
+
+        Paint rest = new Paint();
+        rest.setColor(ContextCompat.getColor(this, R.color.black));
+        title.setTextSize(15);
+
+        PDFBuilder pdfBuilder = new PDFBuilder().
+                addDimensions(800, 1200).
+                addImage(new PDFBitmap(qr_bitmap,rest,new Point(200,200  ))).
+                addText(new PDFText("Potwierdzenie odbioru przesyłki",new Paint(R.color.black), new Point(300,50))).
+                addText(new PDFText("Nadwca: "+order.getSender(),rest,new Point(25,100))).
+                addText(new PDFText("Odbiorca:"+order.getSender(),rest,new Point(25 ,125))).
+                addText(new PDFText("Identyfikator przesyłki: "+order.getId(),rest,new Point(25,150))).
+                addText(new PDFText("Data nadania: "+qr_filename.substring(6), rest,new Point(25,175))).
+                build();
+        pdfBuilder.generate(this,qr_filename);
+    }
     private void fillOrderWithSenderData(Sender sender){
         sender.setName(name_box.getText().toString());
         sender.setSurname(surname_box.getText().toString());
@@ -77,6 +112,8 @@ public class SenderActivity extends AppCompatActivity {
         back_btn.setOnClickListener((View view) ->{
             Log.println(Log.INFO,"",order.getSender().getName());
             qr_generated = false;
+            send_receipt_checkbox.setActivated(false);
+
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
             finish();
@@ -84,6 +121,7 @@ public class SenderActivity extends AppCompatActivity {
 
         next_btn.setOnClickListener((View view)-> {
 
+            send_receipt_checkbox = findViewById(R.id.sendReceiptcheckBox);
             header_text = findViewById(R.id.sender_data);
             next_btn = findViewById(R.id.sender_next_button);
             name_box=findViewById(R.id.editTextName);
@@ -109,17 +147,30 @@ public class SenderActivity extends AppCompatActivity {
                     postal_box.setText("");
                     street_box.setText("");
                     phone_box.setText("");
+                    send_receipt_checkbox.setVisibility(View.VISIBLE);
+
 
                 }
                 //Jeżeli tekst na przycisku = "Generuj kod qr", tzn. nadawca podał swoje dane, przejdź do formularza odbiorcy
                 else if(next_btn.getText().equals(getString(R.string.generate_qr_label))){
+                    //Czy kod QR nie jest pusty
+                    boolean valid_qr = true;
+
                     //Generuj kod QR
                     try {
                         qr_bitmap = generator.generate(order.getId(),qr_code);
-                    } catch (WriterException e) {}
+                    } catch (WriterException e) {
+                        valid_qr = false;
+                    }
 
 
                     fillOrderWithReceiverData(order.getReceiver());
+
+                    //Dodanie zlecenia do bazy danych
+                    order.setState(OrdersState.PREPARED_TO_SEND);
+                    if(!qr_generated)db.collection("orders").document(order.getId()).set(order);
+                    qr_generated = true;
+
                     name_box.clearFocus();
                     surname_box.clearFocus();
                     city_box.clearFocus();
@@ -127,12 +178,12 @@ public class SenderActivity extends AppCompatActivity {
                     street_box.clearFocus();
                     phone_box.clearFocus();
 
-                    //Dodanie zlecenia do bazy danych
-                    order.setState(OrdersState.PREPARED_TO_SEND);
-                    if(!qr_generated)db.collection("orders").document(order.getId()).set(order);
-                    qr_generated = true;
-                    //Dodaj obraz do galerii
-                    MediaStore.Images.Media.insertImage(getContentResolver(),qr_bitmap,"Order "+ Calendar.getInstance().getTime(),"");
+                    //Jeśli wygenerowano poprawnie kod qr i zaznaczono checkbox - stwórz dokument PDF
+                    if(valid_qr && send_receipt_checkbox.isChecked()){
+                        generatePDF();
+                    }
+
+
                 }
 
 

@@ -16,4 +16,5 @@
     <string name="list_receiver_info">Receiver info</string>
     <string name="list_sender_info">Sender info</string>
     <string name="three_dots_icon">⋮</string>
+    <string name="smaller_address_hint_text"><font size="12">Miejcowość i numer budynku</font> </string>
 </resources>
