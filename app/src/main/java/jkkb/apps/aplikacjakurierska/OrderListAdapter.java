@@ -1,8 +1,10 @@
 package jkkb.apps.aplikacjakurierska;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +24,18 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderViewHolder> {
         this.orders = orders;
     }
 
-     Context context;
-     List<Order> orders;
+    //Konstruktor potrzebny do menu kontekstowego
+    public OrderListAdapter(Activity activity, Context context, List<Order> orders) {
+        this.context = context;
+        this.orders = orders;
+        this.activity = activity;
+    }
+
+    private Context context;
+    private List<Order> orders;
+    private Activity activity;
+    private int order_nr;
+    public int getOrderPosition(){return order_nr;}
 
     //dodaje pola z widoku order_view do listy (RecyclerView)
     @NonNull
@@ -37,13 +49,10 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderViewHolder> {
     public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
         holder.sender_info.setText("Od: "+orders.get(position).getSender().toString());
         holder.receiver_info.setText("Do: "+orders.get(position).getReceiver().toString());
+
         holder.itemView.setOnClickListener(view -> {
-            //Intent intent = new Intent(context, FullOrderInfoActivity.class);
-
-            //TODO: Przy bazie danych zmienić na getID()
-            //intent.putExtra("order_id",position);
-            //context.startActivity(intent);
-
+            activity.registerForContextMenu(view);
+            order_nr = holder.getAdapterPosition();
         });
 
         //Dodaje ikony poszczególnych stanów zamówienia

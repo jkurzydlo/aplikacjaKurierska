@@ -38,9 +38,11 @@ public class CourierActivity extends AppCompatActivity {
             if(task.isSuccessful())
                 for(QueryDocumentSnapshot doc : task.getResult()){
                     //Dodaje zlecenia do listy
+                    Log.println(Log.INFO,"","xddsds");
                     if(orders.size() < task.getResult().size())orders.add(doc.toObject(Order.class));
                 }
             OrderListAdapter adapter = new OrderListAdapter(getApplicationContext(),orders);
+            list_view.setAdapter(adapter);
         });
     }
         @Override
@@ -70,8 +72,6 @@ public class CourierActivity extends AppCompatActivity {
         Log.println(Log.INFO, "", getApplicationInfo().dataDir);
 
         list_view.setLayoutManager(new LinearLayoutManager(this));
-
-
         loadOrders(list_view);
     }
 

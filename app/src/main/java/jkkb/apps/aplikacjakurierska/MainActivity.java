@@ -62,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         courier_btn.setOnClickListener((View view)->{
-                Intent intent = new Intent(this, CourierActivity.class); //Przejście z MainActivity (this) (menu) do trybu kuriera
-                startActivity(intent);
-                finish();
+            Intent intent = new Intent(this, CourierActivity.class); //Przejście z MainActivity (this) (menu) do trybu kuriera
+            startActivity(intent);
+            finish();
         });
         seller_btn.setOnClickListener((View view)->{
             Intent intent = new Intent(this,SenderActivity.class);
