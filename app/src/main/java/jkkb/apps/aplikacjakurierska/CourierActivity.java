@@ -41,7 +41,7 @@ public class CourierActivity extends AppCompatActivity {
                     Log.println(Log.INFO,"","xddsds");
                     if(orders.size() < task.getResult().size())orders.add(doc.toObject(Order.class));
                 }
-            OrderListAdapter adapter = new OrderListAdapter(getApplicationContext(),orders);
+            OrderListAdapter adapter = new OrderListAdapter(this,getApplicationContext(),orders);
             list_view.setAdapter(adapter);
         });
     }

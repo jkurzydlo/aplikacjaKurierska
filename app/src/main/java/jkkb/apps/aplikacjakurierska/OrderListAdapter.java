@@ -19,6 +19,7 @@ import java.util.List;
 //klasa potrzebna do obsługi własnych typów w RecyclerView (na liście)
 public class OrderListAdapter extends RecyclerView.Adapter<OrderViewHolder> {
 
+
     public OrderListAdapter(Context context, List<Order> orders) {
         this.context = context;
         this.orders = orders;
@@ -51,8 +52,10 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderViewHolder> {
         holder.receiver_info.setText("Do: "+orders.get(position).getReceiver().toString());
 
         holder.itemView.setOnClickListener(view -> {
-            activity.registerForContextMenu(view);
-            order_nr = holder.getAdapterPosition();
+            if(activity.getLocalClassName().contentEquals("ReceiverActivity")) {
+                activity.registerForContextMenu(view);
+                order_nr = holder.getAdapterPosition();
+            }
         });
 
         //Dodaje ikony poszczególnych stanów zamówienia
