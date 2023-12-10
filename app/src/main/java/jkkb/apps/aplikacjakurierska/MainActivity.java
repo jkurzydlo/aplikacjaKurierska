@@ -6,11 +6,13 @@ import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.net.URI;
 import java.util.concurrent.Executor;
 
 import jkkb.apps.aplikacjakurierska.Authentication.AuthenticationManager;
