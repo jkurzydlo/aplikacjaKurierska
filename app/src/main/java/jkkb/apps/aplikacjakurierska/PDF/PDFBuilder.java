@@ -7,7 +7,10 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
+import android.graphics.pdf.PdfRenderer;
+import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Pair;
 
@@ -16,6 +19,8 @@ import androidx.core.content.ContextCompat;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import jkkb.apps.aplikacjakurierska.R;
@@ -42,6 +47,9 @@ public class PDFBuilder {
         return this;
     }
 
+    public static final PDFBuilder create(){
+        return new PDFBuilder();
+    }
     public PDFBuilder build(){
         PDFBuilder temp = new PDFBuilder();
         temp.height = this.height;
@@ -51,7 +59,9 @@ public class PDFBuilder {
         return temp;
     }
 
-    public void generate(Context context, String filename){
+    public String generate(Context context, String filename){
+
+        String file_path="";
         PdfDocument doc = new PdfDocument();
         PdfDocument.PageInfo info = new PdfDocument.PageInfo.Builder((int)width,(int)height,1).create();
         PdfDocument.Page page = doc.startPage(info);
@@ -64,16 +74,23 @@ public class PDFBuilder {
             canvas.drawText(txt.getText(), txt.getPosition().x, txt.getPosition().y,txt.getPaint());
         doc.finishPage(page);
 
-        //Zapis dokumentu do pliku
-        File file = new File(Environment.getExternalStorageDirectory().toString(),filename+".pdf");
-        try{
-            doc.writeTo(Files.newOutputStream(file.toPath()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        //Zapis dokumentu do pliku w /sdcard/Pictures
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+             file_path = MediaStore.Images.Media.insertImage(context.getContentResolver(),images.get(0).getImage(),filename,"");
+        }else {
+            File file = new File(Environment.getExternalStorageDirectory().getPath(), filename + ".pdf");
+            try {
+                doc.writeTo(Files.newOutputStream(file.toPath()));
+            } catch (IOException e) {
+                Log.println(Log.INFO,"","Błąd zapisu pliku");
+            }finally {
+                doc.close();
+            }
+
         }
 
-        doc.close();
         Log.println(Log.INFO,"", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath());
+    return file_path;
     }
 
 }

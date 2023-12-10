@@ -4,13 +4,16 @@ package jkkb.apps.aplikacjakurierska;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 
 import android.util.Pair;
@@ -26,6 +29,7 @@ import android.widget.Toast;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.WriterException;
 
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -48,13 +52,13 @@ public class SenderActivity extends AppCompatActivity {
     private QRGenerator generator = new QRGenerator();
     private Bitmap qr_bitmap = Bitmap.createBitmap(1,1, Bitmap.Config.ALPHA_8);
     private CheckBox send_receipt_checkbox;
+    private String attachment_path;
 
     // final int permission_status=0;
 
 
     private void generatePDF(){
         String qr_filename = "Order "+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
-        MediaStore.Images.Media.insertImage(getContentResolver(),qr_bitmap,qr_filename,"");
 
         Paint title = new Paint();
         title.setColor(ContextCompat.getColor(this, R.color.black));
@@ -67,16 +71,21 @@ public class SenderActivity extends AppCompatActivity {
         rest.setColor(ContextCompat.getColor(this, R.color.black));
         title.setTextSize(15);
 
-        PDFBuilder pdfBuilder = new PDFBuilder().
+
+                attachment_path = PDFBuilder.
+                create().
                 addDimensions(800, 1200).
                 addImage(new PDFBitmap(qr_bitmap,rest,new Point(200,200  ))).
                 addText(new PDFText("Potwierdzenie odbioru przesyłki",new Paint(R.color.black), new Point(300,50))).
-                addText(new PDFText("Nadwca: "+order.getSender(),rest,new Point(25,100))).
+                addText(new PDFText("Nadawca: "+order.getSender(),rest,new Point(25,100))).
                 addText(new PDFText("Odbiorca:"+order.getSender(),rest,new Point(25 ,125))).
                 addText(new PDFText("Identyfikator przesyłki: "+order.getId(),rest,new Point(25,150))).
                 addText(new PDFText("Data nadania: "+qr_filename.substring(6), rest,new Point(25,175))).
-                build();
-        pdfBuilder.generate(this,qr_filename);
+                addText(new PDFText("Wygenerowano z użyciem Aplikacji Kurierskiej",rest,new Point(25,650))).
+                build().
+                generate(this,qr_filename);
+
+                Log.println(Log.INFO,"","PLIK: "+attachment_path);
     }
     private void fillOrderWithSenderData(Sender sender){
         sender.setName(name_box.getText().toString());
@@ -101,6 +110,7 @@ public class SenderActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sender);
 
@@ -112,11 +122,24 @@ public class SenderActivity extends AppCompatActivity {
         back_btn.setOnClickListener((View view) ->{
             Log.println(Log.INFO,"",order.getSender().getName());
             qr_generated = false;
-            send_receipt_checkbox.setActivated(false);
+            if(send_receipt_checkbox != null)send_receipt_checkbox.setActivated(false);
 
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
             finish();
+        });
+
+        qr_code.setOnClickListener((View view)->{
+            Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.parse(
+                    "mailto:"));
+
+
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Potwierdzenie nadania przesyłki");
+            emailIntent.putExtra(Intent.EXTRA_STREAM, URI.create(attachment_path));
+            emailIntent.putExtra(Intent.EXTRA_TEXT, "Potwierdzenie w załączniku");
+            emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(Intent.createChooser(emailIntent, "Wybierz klienta e-mail"));
+
         });
 
         next_btn.setOnClickListener((View view)-> {
