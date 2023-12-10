@@ -2,6 +2,7 @@ package jkkb.apps.aplikacjakurierska;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.IntentSenderRequest;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -11,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -30,18 +33,34 @@ public class CourierActivity extends AppCompatActivity {
     private Button scan_qr_btn;
     private ImageButton back_btn,refresh_btn;
     private ArrayList<Order> orders = new ArrayList<>();
+    private OrderListAdapter adapter;
 
     private ActivityResultLauncher<IntentSenderRequest> someActivityResultLauncher;
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add("Potwierdź możliwość odbioru przesyłki");
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        Log.println(Log.INFO,"",orders.get(adapter.getOrderPosition()).getId());
+        if(item.getItemId() == 0 && orders.get(adapter.getOrderPosition()).getState().equals(OrdersState.TRANSPORTED))
+            db.document("orders/"+orders.get(adapter.getOrderPosition()).getId()).
+                    update("state","READY_TO_RECEIVE");
+        return super.onContextItemSelected(item);
+    }
 
     private void loadOrders(RecyclerView list_view){
         db.collection("orders").get().addOnCompleteListener(task -> {
             if(task.isSuccessful())
                 for(QueryDocumentSnapshot doc : task.getResult()){
                     //Dodaje zlecenia do listy
-                    Log.println(Log.INFO,"","xddsds");
                     if(orders.size() < task.getResult().size())orders.add(doc.toObject(Order.class));
                 }
-            OrderListAdapter adapter = new OrderListAdapter(this,getApplicationContext(),orders);
+            adapter = new OrderListAdapter(this,getApplicationContext(),orders);
             list_view.setAdapter(adapter);
         });
     }

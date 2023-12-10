@@ -3,10 +3,26 @@ package jkkb.apps.aplikacjakurierska;
 import java.io.Serializable;
 import java.util.UUID;
 
-//TODO: Dodać datę wysłania,odbioru
 //Dodać stan przesyłki
 
 public class Order{
+    public double getMapX() {
+        return mapX;
+    }
+
+    public void setMapX(double mapX) {
+        this.mapX = mapX;
+    }
+
+    public double getMapY() {
+        return mapY;
+    }
+
+    public void setMapY(double mapY) {
+        this.mapY = mapY;
+    }
+
+    private double mapX,mapY;
     private Sender sender;
     private Receiver receiver;
     private String id = UUID.randomUUID().toString();

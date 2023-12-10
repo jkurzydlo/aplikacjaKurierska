@@ -52,10 +52,10 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderViewHolder> {
         holder.receiver_info.setText("Do: "+orders.get(position).getReceiver().toString());
 
         holder.itemView.setOnClickListener(view -> {
-            if(activity.getLocalClassName().contentEquals("ReceiverActivity")) {
+           // if(activity.getLocalClassName().contentEquals("ReceiverActivity")) {
                 activity.registerForContextMenu(view);
                 order_nr = holder.getAdapterPosition();
-            }
+            //}
         });
 
         //Dodaje ikony poszczególnych stanów zamówienia
