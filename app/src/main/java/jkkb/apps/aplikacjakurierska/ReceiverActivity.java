@@ -69,9 +69,16 @@ public class ReceiverActivity extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         Log.println(Log.INFO,"",orders.get(adapter.getOrderPosition()).getId());
-        if(item.getItemId() == 0 && orders.get(adapter.getOrderPosition()).getState().equals(OrdersState.READY_TO_RECEIVE))
+        if(item.getItemId() == 0 && orders.get(adapter.getOrderPosition()).getState().equals(OrdersState.READY_TO_RECEIVE)) {
             db.document("orders/"+orders.get(adapter.getOrderPosition()).getId()).
                     update("state","REALISED");
+
+    } else if (item.getTitle().equals("Pokaż lokalizację")) {
+
+            Intent intent = new Intent(this, MapActivity.class);
+            startActivity(intent);
+        }
+
         return super.onContextItemSelected(item);
     }
 
