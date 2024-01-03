@@ -136,10 +136,9 @@ public class SenderActivity extends AppCompatActivity {
 
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Potwierdzenie nadania przesyłki");
             emailIntent.putExtra(Intent.EXTRA_STREAM, URI.create(attachment_path));
-            emailIntent.putExtra(Intent.EXTRA_TEXT, "Potwierdzenie w załączniku");
+            emailIntent.putExtra(Intent.EXTRA_TEXT, "Nadawca: "+order.getSender()+"\nOdbiorca: "+order.getReceiver()+"\nIdentyfikator zlecenia: "+order.getId());
             emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivity(Intent.createChooser(emailIntent, "Wybierz klienta e-mail"));
-
         });
 
         next_btn.setOnClickListener((View view)-> {

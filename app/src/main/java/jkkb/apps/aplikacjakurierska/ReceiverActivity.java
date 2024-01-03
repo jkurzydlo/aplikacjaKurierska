@@ -8,14 +8,19 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -28,6 +33,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ReceiverActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -37,6 +44,7 @@ public class ReceiverActivity extends AppCompatActivity {
     private TextView empty_label;
     private ArrayList<Order> orders = new ArrayList<>();
     private OrderListAdapter adapter;
+    private EditText searchBox;
 
     private void loadOrders(RecyclerView list_view){
         //Wyświetl tylko te zlecenia przypisane do numeru telefonu na używanym urządzeniu
@@ -68,10 +76,16 @@ public class ReceiverActivity extends AppCompatActivity {
 
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
+
         Log.println(Log.INFO,"",orders.get(adapter.getOrderPosition()).getId());
         if(item.getItemId() == 0 && orders.get(adapter.getOrderPosition()).getState().equals(OrdersState.READY_TO_RECEIVE))
             db.document("orders/"+orders.get(adapter.getOrderPosition()).getId()).
                     update("state","REALISED");
+        else if(item.getTitle().equals("Pokaż lokalizację")){
+Intent intent = new Intent(this, MainActivity.class);
+startActivity(intent);
+finish();
+        }
         return super.onContextItemSelected(item);
     }
 
@@ -91,7 +105,6 @@ public class ReceiverActivity extends AppCompatActivity {
         refresh_btn = findViewById(R.id.receiver_button_referesh_list);
         list_view = findViewById(R.id.receiver_order_list);
         list_view.setLayoutManager(new LinearLayoutManager(this));
-
 
 
         //Zaktualizuj listę po naciśnięciu przycisku

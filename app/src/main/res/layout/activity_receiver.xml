@@ -36,19 +36,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/receiver_order_list"
-            android:layout_width="279dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="250dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/order_list_label"
-            tools:itemCount="11" />
-
         <ImageButton
             android:id="@+id/receiver_button_referesh_list"
             android:layout_width="62dp"
@@ -65,8 +52,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Brak przesyłek przypisanych do tego numeru"
-            tools:layout_editor_absoluteX="-1dp"
-            tools:layout_editor_absoluteY="221dp" />
+            app:layout_constraintBottom_toTopOf="@+id/receiver_order_list"
+            app:layout_constraintTop_toBottomOf="@+id/receiver_order_list"
+            app:layout_constraintVertical_bias="0.5"
+            tools:layout_editor_absoluteX="-1dp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            app:layout_constraintTop_toBottomOf="@+id/order_list_label"
+            tools:layout_editor_absoluteX="-1dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/receiver_order_list"
+                android:layout_width="279dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="75dp"
+                android:layout_marginBottom="250dp"
+                tools:itemCount="11" />
+        </RelativeLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

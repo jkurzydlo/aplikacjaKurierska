@@ -9,21 +9,32 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 import jkkb.apps.aplikacjakurierska.QR.QRActivity;
 
@@ -34,6 +45,7 @@ public class CourierActivity extends AppCompatActivity {
     private ImageButton back_btn,refresh_btn;
     private ArrayList<Order> orders = new ArrayList<>();
     private OrderListAdapter adapter;
+    private EditText search_bar;
 
     private ActivityResultLauncher<IntentSenderRequest> someActivityResultLauncher;
 
@@ -47,12 +59,14 @@ public class CourierActivity extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(@NonNull MenuItem item) {
         Log.println(Log.INFO,"",orders.get(adapter.getOrderPosition()).getId());
-        if(item.getItemId() == 0 && orders.get(adapter.getOrderPosition()).getState().equals(OrdersState.TRANSPORTED))
-            db.document("orders/"+orders.get(adapter.getOrderPosition()).getId()).
-                    update("state","READY_TO_RECEIVE");
+        if(item.getItemId() == 0 && orders.get(adapter.getOrderPosition()).getState().equals(OrdersState.TRANSPORTED)) {
+            db.document("orders/" + orders.get(adapter.getOrderPosition()).getId()).
+                    update("state", "READY_TO_RECEIVE");
+        }
         return super.onContextItemSelected(item);
     }
 
+    boolean loaded;
     private void loadOrders(RecyclerView list_view){
         db.collection("orders").get().addOnCompleteListener(task -> {
             if(task.isSuccessful())
@@ -62,25 +76,36 @@ public class CourierActivity extends AppCompatActivity {
                 }
             adapter = new OrderListAdapter(this,getApplicationContext(),orders);
             list_view.setAdapter(adapter);
+            loaded = true;
+
+            for(Order order : orders){
+                db.document("orders/" + order.getId()).update("mapX",2.11);
+            }
         });
+
     }
         @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courier);
 
-        refresh_btn = findViewById(R.id.courier_button_referesh_list);
-        RecyclerView list_view = findViewById(R.id.order_list);
-        //Zaktualizuj listę po naciśnięciu przycisku
-        refresh_btn.setOnClickListener(view -> {
+            refresh_btn = findViewById(R.id.courier_button_referesh_list);
+            RecyclerView list_view = findViewById(R.id.order_list);
+            //Zaktualizuj listę po naciśnięciu przycisku
+            refresh_btn.setOnClickListener(view -> {
                 orders.clear();
                 loadOrders(list_view);
             });
 
-        back_btn = findViewById(R.id.courier_button_back);
+        //search_bar = findViewById(R.id.courierSearchBar);
+
+
+
+            back_btn = findViewById(R.id.courier_button_back);
         scan_qr_btn = findViewById(R.id.courier_scan_qr_button);
         scan_qr_btn.setOnClickListener((View view) -> readQR());
         back_btn.setOnClickListener((View view) -> {
+
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -92,6 +117,7 @@ public class CourierActivity extends AppCompatActivity {
 
         list_view.setLayoutManager(new LinearLayoutManager(this));
         loadOrders(list_view);
+
     }
 
     private void readQR(){
