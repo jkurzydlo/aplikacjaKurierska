@@ -43,6 +43,7 @@ dependencies {
     implementation("androidx.biometric:biometric:1.1.0-alpha02")
     implementation ("com.google.android.gms:play-services-auth:20.7.0")
     implementation("com.google.firebase:firebase-firestore:24.9.1")
+    implementation ("com.google.android.gms:play-services-maps:17.0.1")
     //implementation("com.android.support:multidex:1.0.3")
     // https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api
 // https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail
