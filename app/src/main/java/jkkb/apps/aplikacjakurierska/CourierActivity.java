@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -54,6 +55,7 @@ public class CourierActivity extends AppCompatActivity {
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         menu.add("Potwierdź możliwość odbioru przesyłki");
+        menu.add("Kontakt");
     }
 
     @Override
@@ -62,6 +64,11 @@ public class CourierActivity extends AppCompatActivity {
         if(item.getItemId() == 0 && orders.get(adapter.getOrderPosition()).getState().equals(OrdersState.TRANSPORTED)) {
             db.document("orders/" + orders.get(adapter.getOrderPosition()).getId()).
                     update("state", "READY_TO_RECEIVE");
+        }
+        if(item.getTitle() == "Kontakt") {
+            Intent intent = new Intent(Intent.ACTION_DIAL);
+            intent.setData(Uri.parse("tel:"+orders.get(adapter.getOrderPosition()).getReceiver().getPhoneNr()));
+            startActivity(intent);
         }
         return super.onContextItemSelected(item);
     }
