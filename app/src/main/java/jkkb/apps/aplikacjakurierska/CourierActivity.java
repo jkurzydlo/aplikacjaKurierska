@@ -5,13 +5,20 @@ import androidx.activity.result.IntentSenderRequest;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,6 +30,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -39,7 +47,7 @@ import java.util.stream.Collectors;
 
 import jkkb.apps.aplikacjakurierska.QR.QRActivity;
 
-public class CourierActivity extends AppCompatActivity {
+public class CourierActivity extends AppCompatActivity implements LocationListener {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Button scan_qr_btn;
@@ -47,6 +55,7 @@ public class CourierActivity extends AppCompatActivity {
     private ArrayList<Order> orders = new ArrayList<>();
     private OrderListAdapter adapter;
     private EditText search_bar;
+    LocationManager locationManager;
 
     private ActivityResultLauncher<IntentSenderRequest> someActivityResultLauncher;
 
@@ -91,7 +100,16 @@ public class CourierActivity extends AppCompatActivity {
         });
 
     }
-        @Override
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 100 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            recreate();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_courier);
@@ -106,6 +124,11 @@ public class CourierActivity extends AppCompatActivity {
 
         //search_bar = findViewById(R.id.courierSearchBar);
 
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(this,new String[]{
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                },100);
+            }else getLocation();
 
 
             back_btn = findViewById(R.id.courier_button_back);
@@ -148,4 +171,21 @@ public class CourierActivity extends AppCompatActivity {
             builder.setPositiveButton("OK", (dialogInterface, i) -> dialogInterface.dismiss()).show();
         }
     });
+
+    private void getLocation() {
+        try {
+            locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
+        }catch (Exception e){e.printStackTrace();}
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        orders.forEach((Order order)->{
+            db.document("orders/"+order.getId()).update("mapX",location.getLatitude(),
+                    "mapY",location.getLongitude());
+        });
+
+    }
+
 }

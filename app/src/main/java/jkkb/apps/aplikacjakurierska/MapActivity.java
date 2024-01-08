@@ -23,7 +23,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        LatLng location = new LatLng(37.7749, -122.4194); // Współrzędne dla San Francisco
+        LatLng location = new LatLng((double)getIntent().getExtras().get("X"),
+                (double)getIntent().getExtras().get("Y")); // Współrzędne dla San Francisco
 
         googleMap.addMarker(new MarkerOptions().position(location).title("Marker w San Francisco"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 12));

@@ -82,9 +82,11 @@ public class ReceiverActivity extends AppCompatActivity {
             db.document("orders/"+orders.get(adapter.getOrderPosition()).getId()).
                     update("state","REALISED");
         else if(item.getTitle().equals("Pokaż lokalizację")){
-Intent intent = new Intent(this, MainActivity.class);
-startActivity(intent);
-finish();
+            Intent intent = new Intent(this, MapActivity.class);
+            intent.putExtra("X",orders.get(adapter.getOrderPosition()).getMapX());
+            intent.putExtra("Y",orders.get(adapter.getOrderPosition()).getMapY());
+            startActivity(intent);
+            finish();
         }
         return super.onContextItemSelected(item);
     }
